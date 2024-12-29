@@ -7,7 +7,7 @@ type Vector struct {
 }
 
 func (v Vector) Length() float64 {
-	return math.Sqrt(v.X*v.X*+v.Y*v.Y + v.Z*v.Z)
+	return math.Sqrt(v.X*v.X + v.Y*v.Y + v.Z*v.Z)
 }
 func (v Vector) Dot(i Vector) float64 {
 	return v.X*i.X + v.Y*i.Y + v.Z*i.Z
