@@ -21,5 +21,5 @@ func main() {
 			A: 255,
 		}
 	})
-	image.Save(fmt.Sprintf("test%d.png", time.Now().Unix()))
+	image.Save(fmt.Sprintf("./renders/test%d.png", time.Now().Unix()))
 }
