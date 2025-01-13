@@ -42,3 +42,11 @@ func TestVectorAddScalar(t *testing.T) {
 	result := v.AddScalar(scalar)
 	assert.Equal(t, expected, result, "they should be equal")
 }
+
+func TestVectorSubtract(t *testing.T) {
+	v1 := Vector{5, 6, 7}
+	v2 := Vector{1, 2, 3}
+	expected := Vector{4, 4, 4}
+	result := v1.Subtract(v2)
+	assert.Equal(t, expected, result)
+}

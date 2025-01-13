@@ -20,7 +20,7 @@ func NewImage(width int, height int) *Image {
 func (i *Image) PixelTransform(transform func(int, int) color.RGBA) {
 	for x := 0; x < i.Width; x++ {
 		for y := 0; y < i.Height; y++ {
-			i.setPixel(x, y, transform(x, y))
+			i.SetPixel(x, y, transform(x, y))
 		}
 	}
 }
@@ -36,6 +36,6 @@ func (i *Image) Save(filename string) {
 	png.Encode(f, i.Img)
 }
 
-func (i *Image) setPixel(x int, y int, color color.RGBA) {
+func (i *Image) SetPixel(x int, y int, color color.RGBA) {
 	i.Img.Set(x, y, color)
 }

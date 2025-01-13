@@ -25,3 +25,15 @@ func (v Vector) MultiplyScalar(t float64) Vector {
 func (v Vector) AddScalar(t float64) Vector {
 	return Vector{v.X + t, v.Y + t, v.Z + t}
 }
+
+func (v Vector) DivideScalar(t float64) Vector {
+	return Vector{v.X / t, v.Y / t, v.Z / t}
+}
+
+func (v Vector) Subtract(i Vector) Vector {
+	return Vector{v.X - i.X, v.Y - i.Y, v.Z - i.Z}
+}
+
+func (v Vector) Add(i Vector) Vector {
+	return Vector{v.X + i.X, v.Y + i.Y, v.Z + i.Z}
+}
