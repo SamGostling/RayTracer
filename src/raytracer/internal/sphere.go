@@ -3,8 +3,9 @@ package internal
 import "math"
 
 type Sphere struct {
-	Center Vector
-	Radius float64
+	Center   Vector
+	Radius   float64
+	Material Material
 }
 
 /*

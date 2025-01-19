@@ -11,8 +11,10 @@ import (
 func main() {
 	createImageWithSphere(
 		internal.Sphere{
-			Center: internal.Vector{X: -3, Y: 0, Z: -16},
-			Radius: 2},
+			Center:   internal.Vector{X: -3, Y: 0, Z: -16},
+			Radius:   2,
+			Material: internal.ShinyYellow,
+		},
 		400,
 		500).
 		Save(fmt.Sprintf("./renders/sphere%d.png", time.Now().Unix()))
