@@ -9,12 +9,30 @@ import (
 )
 
 func main() {
-	createImageWithSphere(
-		internal.Sphere{
+	var spheres = []internal.Sphere{
+		{
 			Center:   internal.Vector{X: -3, Y: 0, Z: -16},
 			Radius:   2,
 			Material: internal.ShinyYellow,
 		},
+		{
+			Center:   internal.Vector{X: -1, Y: -1.5, Z: -12},
+			Radius:   1.8,
+			Material: internal.BlueMetal,
+		},
+		{
+			Center:   internal.Vector{X: 1.5, Y: -0.5, Z: -18},
+			Radius:   3,
+			Material: internal.GreenRubber,
+		},
+		{
+			Center:   internal.Vector{X: 7, Y: 5, Z: -18},
+			Radius:   4,
+			Material: internal.RedPlastic,
+		},
+	}
+	createImageWithSphere(
+		spheres,
 		400,
 		500).
 		Save(fmt.Sprintf("./renders/sphere%d.png", time.Now().Unix()))
@@ -37,7 +55,7 @@ func renderGradient() {
 	image.Save(fmt.Sprintf("./renders/gradient%d.png", time.Now().Unix()))
 }
 
-func createImageWithSphere(sphere internal.Sphere, height, width int) *internal.Image {
+func createImageWithSphere(spheres []internal.Sphere, height, width int) *internal.Image {
 	image := internal.NewImage(width, height)
 	var wg sync.WaitGroup
 
@@ -48,7 +66,8 @@ func createImageWithSphere(sphere internal.Sphere, height, width int) *internal.
 			x := ((2.0*float64(col)+1)/float64(width) - 1) * float64(width) / float64(height)
 			dir := internal.Vector{X: x, Y: y, Z: -1}.Normalize()
 			ray := internal.Ray{Direction: dir}
-			c := ray.Cast(sphere)
+			scene := internal.Scene{Spheres: spheres}
+			c := ray.Cast(scene).Color
 			colour := color.RGBA{
 				R: uint8(255 * c.X),
 				G: uint8(255 * c.Y),
