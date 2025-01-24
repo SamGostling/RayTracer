@@ -1,18 +1,22 @@
-package internal
+package shape
 
-import "math"
+import (
+	"github.com/SamGostling/RayTracer/material"
+	"github.com/SamGostling/RayTracer/vector"
+	"math"
+)
 
 type Sphere struct {
-	Center   Vector
+	Center   vector.Vector
 	Radius   float64
-	Material Material
+	Material material.Material
 }
 
 /*
 QuadIntersect checks if a ray intersects with a sphere and returns a boolean and the distance of the intersection.
 It uses the quadratic method to calculate the intersection and is more accurate than the geometric method.
 */
-func (s Sphere) QuadIntersect(ray Ray) (bool, float64) {
+func (s Sphere) QuadIntersect(ray vector.Ray) (bool, float64) {
 	originToCenter := ray.Origin.Subtract(s.Center)
 	a := ray.Direction.Dot(ray.Direction)
 	b := 2.0 * originToCenter.Dot(ray.Direction)
@@ -54,7 +58,7 @@ func (s Sphere) QuadIntersect(ray Ray) (bool, float64) {
 GeoIntersect checks if a ray intersects with a sphere and returns a boolean and the distance of the intersection.
 It uses the geometric method to calculate the intersection and is more efficient than the quadratic method.
 */
-func (s Sphere) GeoIntersect(ray Ray) (bool, float64) {
+func (s Sphere) GeoIntersect(ray vector.Ray) (bool, float64) {
 	originToCenter := s.Center.Subtract(ray.Origin)
 	projectionLength := originToCenter.Dot(ray.Direction)
 	perpendicularDistanceSquared := originToCenter.Dot(originToCenter) - projectionLength*projectionLength

@@ -1,15 +1,16 @@
-package internal
+package shape
 
 import (
+	"github.com/SamGostling/RayTracer/vector"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-var sphere = Sphere{Center: Vector{0, 0, 0}, Radius: 1}
+var sphere = Sphere{Center: vector.Vector{}, Radius: 1}
 
 func TestSphereIntersect(t *testing.T) {
 	// Ray that intersectsQuad the sphere at two points
-	ray1 := Ray{Origin: Vector{0, 0, -3}, Direction: Vector{0, 0, 1}}
+	ray1 := vector.Ray{Origin: vector.Vector{Z: -3}, Direction: vector.Vector{Z: 1}}
 	intersectsQuad, distanceQuad := sphere.QuadIntersect(ray1)
 	intersectsGeo, distanceGeo := sphere.GeoIntersect(ray1)
 	assert.Equal(t, intersectsQuad, intersectsGeo, "QuadIntersect and GeoIntersect should return the same intersection result")
@@ -20,7 +21,7 @@ func TestSphereIntersect(t *testing.T) {
 
 func TestSphereIntersectEdgeCases(t *testing.T) {
 	// Ray that just touches the sphere (discriminant = 0)
-	ray2 := Ray{Origin: Vector{1, 0, -1}, Direction: Vector{0, 0, 1}}
+	ray2 := vector.Ray{Origin: vector.Vector{X: 1, Z: -1}, Direction: vector.Vector{Z: 1}}
 	intersectsQuad, distanceQuad := sphere.QuadIntersect(ray2)
 	intersectsGeo, distanceGeo := sphere.GeoIntersect(ray2)
 	assert.Equal(t, intersectsQuad, intersectsGeo, "QuadIntersect and GeoIntersect should return the same intersection result")
@@ -31,7 +32,7 @@ func TestSphereIntersectEdgeCases(t *testing.T) {
 
 func TestSphereIntersectMiss(t *testing.T) {
 	// Ray that misses the sphere
-	ray3 := Ray{Origin: Vector{0, 0, -3}, Direction: Vector{0, 1, 0}}
+	ray3 := vector.Ray{Origin: vector.Vector{Z: -3}, Direction: vector.Vector{Y: 1}}
 	intersectsQuad, distanceQuad := sphere.QuadIntersect(ray3)
 	intersectsGeo, distanceGeo := sphere.GeoIntersect(ray3)
 	assert.Equal(t, intersectsQuad, intersectsGeo, "QuadIntersect and GeoIntersect should return the same intersection result")
@@ -42,7 +43,7 @@ func TestSphereIntersectMiss(t *testing.T) {
 
 func TestSphereIntersectInside(t *testing.T) {
 	// Ray that starts inside the sphere
-	ray4 := Ray{Origin: Vector{0, 0, 0}, Direction: Vector{0, 0, 1}}
+	ray4 := vector.Ray{Origin: vector.Vector{}, Direction: vector.Vector{Z: 1}}
 	intersectsQuad, distanceQuad := sphere.QuadIntersect(ray4)
 	intersectsGeo, distanceGeo := sphere.GeoIntersect(ray4)
 	assert.Equal(t, intersectsQuad, intersectsGeo, "QuadIntersect and GeoIntersect should return the same intersection result")

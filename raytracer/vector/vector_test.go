@@ -1,4 +1,4 @@
-package internal
+package vector
 
 import (
 	"github.com/stretchr/testify/assert"

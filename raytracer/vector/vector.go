@@ -1,4 +1,4 @@
-package internal
+package vector
 
 import "math"
 
