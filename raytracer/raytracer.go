@@ -14,24 +14,29 @@ import (
 func main() {
 	var spheres = []shape.Sphere{
 		{
-			Center:   vector.Vector{X: -3, Y: 0, Z: -16},
+			Center:   vector.Vector{X: -4, Y: 0, Z: -16},
 			Radius:   2,
 			Material: material.ShinyYellow,
 		},
 		{
-			Center:   vector.Vector{X: -1, Y: -1.5, Z: -12},
+			Center:   vector.Vector{X: -2, Y: -2.5, Z: -12},
 			Radius:   1.8,
 			Material: material.BlueMetal,
 		},
 		{
-			Center:   vector.Vector{X: 1.5, Y: -0.5, Z: -18},
+			Center:   vector.Vector{X: 2.5, Y: -1.5, Z: -16},
 			Radius:   3,
 			Material: material.GreenRubber,
 		},
 		{
-			Center:   vector.Vector{X: 7, Y: 5, Z: -18},
+			Center:   vector.Vector{X: 6, Y: 6, Z: -18},
 			Radius:   4,
 			Material: material.RedPlastic,
+		},
+		{
+			Center:   vector.Vector{X: 5, Y: -5, Z: -18},
+			Radius:   4,
+			Material: material.WhiteMarble,
 		},
 	}
 	createImageWithSphere(
@@ -77,7 +82,7 @@ func createImageWithSphere(spheres []shape.Sphere, height, width int) *render.Im
 				B: uint8(255 * c.Z),
 				A: 255,
 			}
-			image.SetPixel(row, col, colour)
+			image.SetPixel(col, row, colour)
 		}
 	}
 
