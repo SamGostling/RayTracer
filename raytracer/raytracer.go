@@ -39,8 +39,13 @@ func main() {
 			Material: material.WhiteMarble,
 		},
 	}
+
+	var lights = []shape.Light{
+		shape.NewLight(vector.Vector{X: -20, Y: 20, Z: 20}, 1.5),
+	}
 	createImageWithSphere(
 		spheres,
+		lights,
 		400,
 		500).
 		Save(fmt.Sprintf("./renders/sphere%d.png", time.Now().Unix()))
@@ -63,7 +68,7 @@ func renderGradient() {
 	image.Save(fmt.Sprintf("./renders/gradient%d.png", time.Now().Unix()))
 }
 
-func createImageWithSphere(spheres []shape.Sphere, height, width int) *render.Image {
+func createImageWithSphere(spheres []shape.Sphere, lights []shape.Light, height, width int) *render.Image {
 	image := render.NewImage(width, height)
 	var wg sync.WaitGroup
 
@@ -74,8 +79,8 @@ func createImageWithSphere(spheres []shape.Sphere, height, width int) *render.Im
 			x := ((2.0*float64(col)+1)/float64(width) - 1) * float64(width) / float64(height)
 			dir := vector.Vector{X: x, Y: y, Z: -1}.Normalize()
 			ray := vector.Ray{Direction: dir}
-			scene := render.Scene{Spheres: spheres}
-			c := scene.SceneIntersect(ray).Color
+			scene := render.Scene{Spheres: spheres, Lights: lights}
+			c := scene.CastRay(ray).Color
 			colour := color.RGBA{
 				R: uint8(255 * c.X),
 				G: uint8(255 * c.Y),
