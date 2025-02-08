@@ -16,3 +16,11 @@ func NewCamera(imageWidth int) Camera {
 		imageHeight: imageHeight,
 	}
 }
+
+func (c Camera) Width() int {
+	return c.imageWidth
+}
+
+func (c Camera) Height() int {
+	return c.imageHeight
+}

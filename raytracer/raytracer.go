@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/SamGostling/RayTracer/camera"
 	"github.com/SamGostling/RayTracer/material"
 	"github.com/SamGostling/RayTracer/render"
 	"github.com/SamGostling/RayTracer/shape"
@@ -41,13 +42,15 @@ func main() {
 	}
 
 	var lights = []shape.Light{
-		shape.NewLight(vector.Vector{X: -20, Y: 20, Z: 20}, 1.5),
+		shape.NewLight(vector.Vector{X: -20, Y: 20, Z: 20}, 1.0),
+		shape.NewLight(vector.Vector{X: 30, Y: 50, Z: -25}, 0.9),
+		shape.NewLight(vector.Vector{X: 30, Y: 20, Z: 30}, 0.8),
 	}
+	cam := camera.NewCamera(800)
 	createImageWithSphere(
 		spheres,
 		lights,
-		400,
-		500).
+		cam).
 		Save(fmt.Sprintf("./renders/sphere%d.png", time.Now().Unix()))
 }
 
@@ -68,15 +71,15 @@ func renderGradient() {
 	image.Save(fmt.Sprintf("./renders/gradient%d.png", time.Now().Unix()))
 }
 
-func createImageWithSphere(spheres []shape.Sphere, lights []shape.Light, height, width int) *render.Image {
-	image := render.NewImage(width, height)
+func createImageWithSphere(spheres []shape.Sphere, lights []shape.Light, cam camera.Camera) *render.Image {
+	image := render.NewImage(cam.Width(), cam.Height())
 	var wg sync.WaitGroup
 
 	processRow := func(row int) {
 		defer wg.Done()
-		y := -((2.0*float64(row)+1)/float64(height) - 1)
-		for col := 0; col < width; col++ {
-			x := ((2.0*float64(col)+1)/float64(width) - 1) * float64(width) / float64(height)
+		y := -((2.0*float64(row)+1)/float64(cam.Height()) - 1)
+		for col := 0; col < cam.Width(); col++ {
+			x := ((2.0*float64(col)+1)/float64(cam.Width()) - 1) * float64(cam.Width()) / float64(cam.Height())
 			dir := vector.Vector{X: x, Y: y, Z: -1}.Normalize()
 			ray := vector.Ray{Direction: dir}
 			scene := render.Scene{Spheres: spheres, Lights: lights}
@@ -91,7 +94,7 @@ func createImageWithSphere(spheres []shape.Sphere, lights []shape.Light, height,
 		}
 	}
 
-	for row := 0; row < height; row++ {
+	for row := 0; row < cam.Height(); row++ {
 		wg.Add(1)
 		go processRow(row)
 	}

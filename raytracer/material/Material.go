@@ -5,10 +5,10 @@ import "github.com/SamGostling/RayTracer/vector"
 type Material struct {
 	Color             vector.Vector
 	Albedo            vector.Vector
-	SpecularComponent float32
+	SpecularComponent float64
 }
 
-func NewMaterial(color vector.Vector, albedo vector.Vector, specularComponent float32) Material {
+func NewMaterial(color vector.Vector, albedo vector.Vector, specularComponent float64) Material {
 	return Material{
 		Color:             color,
 		Albedo:            albedo,

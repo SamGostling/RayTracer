@@ -18,6 +18,10 @@ func (v Vector) Normalize() Vector {
 	return Vector{v.X / l, v.Y / l, v.Z / l}
 }
 
+func (v Vector) Negate() Vector {
+	return Vector{-v.X, -v.Y, -v.Z}
+}
+
 func (v Vector) MultiplyScalar(t float64) Vector {
 	return Vector{v.X * t, v.Y * t, v.Z * t}
 }
