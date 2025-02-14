@@ -26,7 +26,14 @@ func (s *Scene) CastRay(ray vector.Ray) material.Material {
 
 	diffuseLightIntensity, specularLightIntensity := 0.0, 0.0
 	for _, light := range s.Lights {
-		lightDir := light.Center().Subtract(point).Normalize()
+		direction := light.Center().Subtract(point)
+		lightDir := direction.Normalize()
+		lightDistance := direction.Length()
+
+		if s.isInShadow(point, N, lightDir, lightDistance) {
+			continue
+		}
+
 		diffuseLightIntensity += light.Intensity() * math.Max(0, lightDir.Dot(N))
 		specularLightIntensity += math.Pow(
 			math.Max(0, -reflect(lightDir.Negate(), N).Dot(ray.Direction)),
@@ -69,6 +76,20 @@ func (s *Scene) intersectSphere(ray vector.Ray, sphere shape.Sphere) (bool, floa
 		return sphere.GeoIntersect(ray)
 	}
 	return sphere.QuadIntersect(ray)
+}
+
+// isInShadow checks if a point is in shadow.
+func (s *Scene) isInShadow(point, normal, lightDir vector.Vector, lightDistance float64) bool {
+	shadowOrig := point.Add(normal.MultiplyScalar(1e-3))
+	if lightDir.Dot(normal) < 0 {
+		shadowOrig = point.Subtract(normal.MultiplyScalar(1e-3))
+	}
+
+	var shadowPoint, shadowNormal vector.Vector
+	tmpMaterial := material.Background
+
+	return s.sceneIntersect(vector.Ray{Origin: shadowOrig, Direction: lightDir}, &tmpMaterial, &shadowPoint, &shadowNormal) &&
+		shadowPoint.Subtract(shadowOrig).Length() < lightDistance
 }
 
 func reflect(I, N vector.Vector) vector.Vector {
